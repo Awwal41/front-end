@@ -4,7 +4,7 @@ const app = express();
 const PORT = 3000;
 
 // Serve static files first
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
 
