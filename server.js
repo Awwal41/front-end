@@ -64,7 +64,7 @@ app.post('/reload', (req, res) => {
 
 // Redirect root to register.html
 app.get('/', (req, res) => {
-    res.redirect('/register.html');
+    res.redirect('/index.html');
 });
 
 app.listen(PORT, () => {
