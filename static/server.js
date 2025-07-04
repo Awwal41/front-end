@@ -3,12 +3,15 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
+// Serve static files first
+app.use(express.static(path.join(__dirname)));
+
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'static')));
 
 // In-memory user store
 const users = {};
 
+// Registration endpoint
 app.post('/api/register', (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -21,6 +24,7 @@ app.post('/api/register', (req, res) => {
     return res.json({ success: true });
 });
 
+// Login endpoint
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -32,13 +36,10 @@ app.post('/api/login', (req, res) => {
     return res.json({ success: true });
 });
 
-// Add these endpoints for index.html functionality
-
 // Mock /ask endpoint
 app.post('/ask', (req, res) => {
     let query = req.body.query || req.query.query;
     if (!query && req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-        // Parse body if not already parsed
         let body = '';
         req.on('data', chunk => { body += chunk; });
         req.on('end', () => {
@@ -59,6 +60,11 @@ app.post('/upload', (req, res) => {
 // Mock /reload endpoint
 app.post('/reload', (req, res) => {
     res.json({ message: 'Data reloaded (mock response).' });
+});
+
+// Redirect root to register.html
+app.get('/', (req, res) => {
+    res.redirect('/register.html');
 });
 
 app.listen(PORT, () => {
